@@ -1,12 +1,11 @@
-import { useRouteMatch } from 'react-router';
-import { UserProps, UserTypes } from '../constants/loginProps';
+import { UserProps } from '../constants/loginProps';
 import { auth } from '../utils/firebaseClient';
 
-const ROOT_USER: UserProps = {
-  username: 'rootuser',
-  password: '123456',
-  type: UserTypes.ADMIN,
-}
+// const ROOT_USER: UserProps = {
+//   username: 'rootuser',
+//   password: '123456',
+//   type: UserTypes.ADMIN,
+// }
 
 export const LoginService = () => {
 

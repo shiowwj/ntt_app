@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useRouteMatch, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { UserProps, UserTypes } from "../../constants/loginProps";
 import {
@@ -10,7 +10,6 @@ import { UserDBService } from "../../utils/userDBController";
 
 const CreateAccountComponent: React.FC = () => {
 	const useCurrentSearchResultContext = useCurrentSearchResult();
-	let { path, url } = useRouteMatch();
 	const [loginErrors, setLoginErrors] = useState([]);
 	const [user, setUser] = useState<UserProps | null>(null);
 	const [isAdmin, setIsAdmin] = useState(false);
@@ -40,7 +39,7 @@ const CreateAccountComponent: React.FC = () => {
 			history.push('/login')
 		}
 
-	},[useCurrentSearchResultContext.currentUser]);
+	},[useCurrentSearchResultContext.currentUser, history]);
 
 	const handleCreateAccount = handleSubmit(async (data) => {
 		// clear loginErrors
