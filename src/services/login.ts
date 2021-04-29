@@ -10,17 +10,18 @@ const ROOT_USER: UserProps = {
 
 export const LoginService = () => {
 
-  const loginUser = async ({ email, password }: any): Promise<UserProps | null> => {
+  const loginUser = async ({ email, password, type }: any): Promise<UserProps | null> => {
     // login the user
     let userDetails: UserProps | null;
-
+    
     try {
       const loginUser = await auth.signInWithEmailAndPassword(email.trim(), password);
       if (loginUser) {
         userDetails = {
           id: loginUser.user?.uid,
           email: email,
-          username: loginUser.additionalUserInfo?.username ? loginUser.additionalUserInfo?.username : ''
+          username: loginUser.additionalUserInfo?.username ? loginUser.additionalUserInfo?.username : '',
+          type: type
         }
         return userDetails;
       } else {
@@ -33,17 +34,18 @@ export const LoginService = () => {
     }
   }
 
-  const createUser = async ({ email, password, username }: any): Promise<UserProps | null> => {
+  const createUser = async ({ email, password, username, type }: any): Promise<UserProps | null> => {
     // create user
     let userDetails: UserProps | null;
     try {
       const createUser = await auth.createUserWithEmailAndPassword(email.trim(), password);
-
+      console.log('Create user auth', createUser);
       if (createUser) {
         userDetails = {
           id: createUser.user?.uid,
           email: email,
           username: username,
+          type: type
         }
         return userDetails;
       } else {
@@ -52,7 +54,6 @@ export const LoginService = () => {
       }
     } catch (error) {
       console.error(error);
-
       return error;
     }
 
@@ -65,7 +66,8 @@ export const LoginService = () => {
 
   return {
     loginUser,
-    logoutUser
+    logoutUser,
+    createUser
   }
 }
 

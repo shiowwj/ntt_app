@@ -5,20 +5,55 @@ export const UserDBService = () => {
 
 
   // create user 
+  const createUserRecord = async (userObject: UserProps): Promise<UserProps | undefined> =>{
+    console.log('user create object', userObject);
+    const timeStamp = new Date();
+    const userRecord = {
+      email: userObject.email,
+      username: userObject.username,
+      type: userObject.type,
+      dateCreated: timeStamp
+    }
+    try {
+      await db
+      .collection('users')
+      .doc(userObject.id)
+      .set(userRecord)
+
+      return userObject;
+    } catch (e) {
+      console.error(e);
+      return e;
+    }
+  }
+  //   const objectToCreate = {
+  //     cityId: result.cityId,
+  //     city: result.city,
+  //     country: result.country,
+  //     date_of_request: result.date_of_request,
+  //   };
+  //   try {
+  //     await db
+  //       .collection('searchHistory')
+  //       .add(objectToCreate);
+  //     return objectToCreate;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
 
   // get user 
-  const getUser = async (userId: UserProps): Promise<UserProps | undefined> => {
+  const getUser = async (userObject: UserProps): Promise<UserProps | undefined> => {
     try {
       const userQuery = await db
         .collection('users')
-        .doc(userId.id)
+        .doc(userObject.id)
         .get();
 
       if (userQuery.exists) {
 
         const data = userQuery.data();
         const userDetails: UserProps = {
-          id: userId.id,
+          id: userObject.id,
           username: data?.username,
           email: data?.email,
           type: data?.type,
@@ -31,12 +66,10 @@ export const UserDBService = () => {
 
     } catch (e) {
       console.error(e);
+      return e;
     }
   }
 
-
-
-  // Gets user
   // /**
   //  * * Creates a user record in firebase firestore (db)
   //  * */
@@ -134,10 +167,7 @@ export const UserDBService = () => {
   // };
 
   return {
-    // deleteSearchResult,
-    // updateSearchResult,
-    // createSearchResultHistoryItem,
-    // getAllSearchResults,
-    getUser
+    getUser,
+    createUserRecord
   };
 };

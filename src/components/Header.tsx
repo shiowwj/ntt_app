@@ -35,6 +35,7 @@ const HeaderComponent = () => {
 	const handleLogOut = () => {
 		LoginService().logoutUser();
 		useCurrentSearchResultContext.setCurrentUser(null);
+		history.push('/');
 	};
 
 	return (
@@ -85,15 +86,15 @@ const HeaderComponent = () => {
 								Login
 							</span>
 						)}
-
-						<span
+						{user ? <span
 							onClick={() => {
 								handleRoutingClick("/dashboard");
 							}}
 							className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4 cursor-pointer"
 						>
 							Dashboard
-						</span>
+						</span>:<></>}
+						
 					</div>
 				</div>
 			)}

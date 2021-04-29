@@ -1,11 +1,20 @@
-import React, { useState } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { UserTypes } from "../../constants/loginProps";
+import { UserProps, UserTypes } from "../../constants/loginProps";
+import {
+	useCurrentSearchResult
+} from "../../hooks/userAuthentication";
+import { LoginService } from '../../services/login';
+import { UserDBService } from "../../utils/userDBController";
 
 const CreateAccountComponent: React.FC = () => {
+	const useCurrentSearchResultContext = useCurrentSearchResult();
 	let { path, url } = useRouteMatch();
 	const [loginErrors, setLoginErrors] = useState([]);
+	const [user, setUser] = useState<UserProps | null>(null);
+	const [isAdmin, setIsAdmin] = useState(false);
+	const history = useHistory();
 	const {
 		register,
 		formState: { errors },
@@ -17,27 +26,50 @@ const CreateAccountComponent: React.FC = () => {
 		type: UserTypes;
 	}>();
 
+	useEffect(() => {
+		setUser(useCurrentSearchResultContext.currentUser);
+
+		if (useCurrentSearchResultContext.currentUser !== null) {
+			const userType = useCurrentSearchResultContext.currentUser.type;
+			if (userType === UserTypes.ADMIN) {
+				setIsAdmin(true);
+			} else {
+				setIsAdmin(false)
+			}
+		} else {
+			history.push('/login')
+		}
+
+	},[useCurrentSearchResultContext.currentUser]);
+
 	const handleCreateAccount = handleSubmit(async (data) => {
 		// clear loginErrors
 		setLoginErrors([]);
-		// const loginResult = await LoginService().loginUser(data);
+		console.log('create user data start', data);
+		const createUserAuthResult = await LoginService().createUser(data);
+
+		if (createUserAuthResult?.hasOwnProperty("code")) {
+      setLoginErrors(Object.values(createUserAuthResult)[1]);
+    }
+		console.log('create user data end', createUserAuthResult);
+		//create db record for user
+		if( createUserAuthResult !== null && createUserAuthResult?.id) {
+			const createUserDBResult = await UserDBService().createUserRecord(createUserAuthResult);
+
+			if( createUserDBResult !== undefined && createUserDBResult.username ) {
+				history.push('/')
+			}
+		}
 		// get user from DB
 	});
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-			<div className="max-w-md w-full space-y-8">
+		<div className="min-h-screen flex justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+			{isAdmin && user !== null ? <div className="max-w-md w-full space-y-8">
 				<div>
 					<h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-						Create an account
+						Create Account for Users
 					</h2>
-					<p className="mt-2 text-center text-sm text-gray-600">
-						<Link to={`${url}`}>
-							<span className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
-								Have an Account? Sign in here
-							</span>
-						</Link>
-					</p>
 				</div>
 
 				{/* LOGIN FORM START */}
@@ -163,7 +195,17 @@ const CreateAccountComponent: React.FC = () => {
 					</div>
 				</form>
 				{/* LOGIN FORM END */}
+			</div> : 
+			<div className="max-w-md w-full space-y-8">
+				Oops. It seems like you do not have access here. 
+				<p>You might be
+					<Link to='/dashboard'>
+						<span> looking for this  </span>
+					</Link>
+				</p>
 			</div>
+			}
+			
 		</div>
 	);
 };
