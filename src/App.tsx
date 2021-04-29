@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch, useHistory, Link } from "react-router-dom
 import Layout from "./components/Layout";
 import LoginMainComponent from "./components/login/Login";
 import PageNotFound404 from "./components/404";
-import Dashboard from "./components/dashboard/Dashboard";
+import DashBoardMainComponent from "./components/dashboard/Dashboard";
 import HeaderComponent from "./components/Header";
 import {
 	UserAuthenticationProvider,
@@ -30,11 +30,8 @@ const Home: React.FC = () => {
 				setIsAdmin(false)
 			}
 		} else {
-
-			console.log('anything?')
 			setUser(null);
 			setIsAdmin(false);
-			
 		}
 	}, [useCurrentSearchResultContext.currentUser, isAdmin]);
 
@@ -88,7 +85,9 @@ function App() {
 						<Route path="/login">
 							<LoginMainComponent />
 						</Route>
-						<Route exact path="/dashboard" component={Dashboard} />
+						<Route path="/dashboard">
+							<DashBoardMainComponent/>							
+						</Route>
 						<Route component={PageNotFound404} />
 					</Switch>
 				</UserAuthenticationProvider>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useCurrentSearchResult } from "../hooks/userAuthentication";
 import { UserProps } from "../constants/loginProps";
-import { LoginService } from "../services/login";
+import { LoginService } from "../services/loginAuth";
 
 const HeaderComponent = () => {
 	const useCurrentSearchResultContext = useCurrentSearchResult();

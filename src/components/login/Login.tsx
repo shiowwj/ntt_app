@@ -6,7 +6,7 @@ import {
   useRouteMatch,
   useHistory,
 } from "react-router-dom";
-import { LoginService } from "../../services/login";
+import { LoginService } from "../../services/loginAuth";
 import { UserDBService } from "../../utils/userDBController";
 import { useCurrentSearchResult } from "../../hooks/userAuthentication";
 import CreateAccountComponent from "./CreateAccount";

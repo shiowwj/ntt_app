@@ -5,7 +5,7 @@ import { UserProps, UserTypes } from "../../constants/loginProps";
 import {
 	useCurrentSearchResult
 } from "../../hooks/userAuthentication";
-import { LoginService } from '../../services/login';
+import { LoginService } from '../../services/loginAuth';
 import { UserDBService } from "../../utils/userDBController";
 
 const CreateAccountComponent: React.FC = () => {
