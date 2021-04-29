@@ -1,4 +1,4 @@
-import { UserProps, UserTypes } from '../constants/loginProps';
+import { UserProps } from '../constants/loginProps';
 import { db } from './firebaseClient';
 
 export const UserDBService = () => {

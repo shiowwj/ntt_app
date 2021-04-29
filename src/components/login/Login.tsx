@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Switch,
   Route,
   useRouteMatch,
-  Link,
   useHistory,
 } from "react-router-dom";
 import { LoginService } from "../../services/login";
@@ -24,7 +23,6 @@ const LoginFormComponent: React.FC = () => {
   const [loginErrors, setLoginErrors] = useState([]);
   const useCurrentSearchResultContext = useCurrentSearchResult();
   const history = useHistory();
-  let { path, url } = useRouteMatch();
   /**
   // handle login, 
   // * if auth success 
@@ -151,7 +149,7 @@ const LoginFormComponent: React.FC = () => {
 };
 
 const LoginMainComponent: React.FC = () => {
-  let { path, url } = useRouteMatch();
+  let { path } = useRouteMatch();
 
   return (
     <>
