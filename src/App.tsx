@@ -47,7 +47,7 @@ const Home: React.FC = () => {
 		<div className="flex justify-center mt-8 pt-4">
 			<div className="w-6/12">
 				<h2 className="mt-6 text-center text-2xl font-extrabold text-gray-900">
-					WELCOME back {user ? <> {user.username}</>
+					WELCOME {user ? <> back {user.username}</>
 					: <></>}
 				</h2>
 				<h4 className="mt-6 text-center text-sm font-bold text-purple-400">
