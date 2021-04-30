@@ -3,17 +3,13 @@ import {
   Switch,
   Route,
   useRouteMatch,
-  useHistory,
 } from "react-router-dom";
 import ViewFormsComponent from './ViewForms';
 import CreateFormComponent from './CreateForm';
 import EditFormComponent from './EditForm';
 
-
 const DashBoardMainComponent: React.FC = () => {
-
   let { path } = useRouteMatch();
-
   return (
     <>
       <Switch>
@@ -23,7 +19,7 @@ const DashBoardMainComponent: React.FC = () => {
         <Route path={`${path}/createform`}>
           <CreateFormComponent />
         </Route>
-        <Route path={`${path}/editform`}>
+        <Route path={`${path}/editform/:formId`}>
           <EditFormComponent />
         </Route>
       </Switch>

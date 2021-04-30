@@ -66,7 +66,7 @@ const Home: React.FC = () => {
 						<Link to={`/login/createaccount`}>
 							<span className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
 								Creating an account for a user? Click here!
-			</span>
+							</span>
 						</Link>
 					</p> : <></>}
 			</div>

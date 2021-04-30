@@ -7,10 +7,10 @@ export const GenericFormDBService = () => {
   // create form 
   const createForm = async(formObject: GenericFormProps): Promise<GenericFormProps|undefined> => {
 
-    const timestamp = new Date();
+    // const timestamp = new Date();
     const formRecord: GenericFormProps = {
       username: formObject.username,
-      dateCreated: timestamp,
+      dateCreated: formObject.dateCreated,
       reportContent: formObject.reportContent,
       approvalStatus: formObject.approvalStatus
     }
@@ -26,17 +26,17 @@ export const GenericFormDBService = () => {
   }
 
   // get form by id
-  const getForm = async (formObject: GenericFormProps): Promise<GenericFormProps|undefined>=>{
+  const getFormById = async ( id: string): Promise<GenericFormProps|undefined>=>{
     try {
       const formQuery = await db
       .collection('genericforms')
-      .doc(formObject.id)
+      .doc(id)
       .get()
 
       if(formQuery.exists){
         const data = formQuery.data();
         const formDetails: GenericFormProps = {
-          id: formObject.id,
+          id: id,
           username: data?.username,
           dateCreated: new Date(
             data?.dateCreated.seconds * 1000 + data?.dateCreated.nanoseconds / 1000000,
@@ -124,7 +124,7 @@ export const GenericFormDBService = () => {
   }
 
   const updateForm = async(formObject: GenericFormProps) =>{
-    const timestamp = new Date();
+    // const timestamp = new Date();
     try {
       const updateRef = await db
       .collection('genericforms')
@@ -132,7 +132,7 @@ export const GenericFormDBService = () => {
       
       updateRef.update({
         username: formObject.username,
-        dateModified: timestamp,
+        dateModified: formObject.dateModified,
         reportContent: formObject.reportContent,
         approvalStatus: formObject.approvalStatus,
       })
@@ -157,7 +157,7 @@ export const GenericFormDBService = () => {
   return {
     getAllForms,
     createForm,
-    getForm,
+    getFormById,
     updateForm,
     deleteForm
   }  

@@ -6,7 +6,7 @@
  const capitializeFirstWord = (
   text: string | undefined
 ): string => {
-  if (text == undefined) {
+  if (text === undefined) {
     return '';
   }
   const words = text.split(' ');
@@ -22,12 +22,12 @@
  * * Function for date formatting
  * @param date
  * @returns string of date formatteed
- * TODO: Use momentjs
+ * TODO: Use momentjs instead
  *
  */
-const dateFormatter = (date: Date | undefined): string => {
+const dateFormatter = (date: Date | undefined, type?: string): string => {
   let dateString: string = '';
-  if (date == undefined) {
+  if (date === undefined) {
     return '';
   }
   const year =
@@ -36,8 +36,8 @@ const dateFormatter = (date: Date | undefined): string => {
       : date.getFullYear();
   const month =
     date.getMonth() < 10
-      ? '0' + date.getMonth().toString()
-      : date.getMonth();
+      ? '0' + (date.getMonth()+1).toString()
+      : date.getMonth()+1;
   const day =
     date.getDate() < 10
       ? '0' + date.getDate().toString()
@@ -50,7 +50,13 @@ const dateFormatter = (date: Date | undefined): string => {
     date.getMinutes() < 10
       ? '0' + date.getMinutes().toString()
       : date.getMinutes();
-  dateString = `${year}-${month}-${day} ${hour}:${minute}hrs`;
+  
+  if ( type === 'date') {
+    return dateString = `${year}-${month}-${day}`;
+  } else if ( type === 'time') {
+    return dateString = `${hour}:${minute}`;
+  } 
+  dateString = `${year}-${month}-${day} ${hour}:${minute} hrs`;
   return dateString;
 };
 
