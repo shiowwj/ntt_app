@@ -71,7 +71,7 @@ export const GenericFormDBService = () => {
         .orderBy('dateCreated', 'desc')
         .limit(15)
         .get()
-        query.docs.map((doc)=>{
+        query.docs.forEach((doc)=>{
           const item = doc.data();
           const id = doc.id;
           let mappedItem: GenericFormProps = {
@@ -94,7 +94,7 @@ export const GenericFormDBService = () => {
         .orderBy('dateCreated', 'desc')
         .limit(15)
         .get()
-        query.docs.map((doc)=>{
+        query.docs.forEach((doc)=>{
           const item = doc.data();
           const id = doc.id;
           let mappedItem: GenericFormProps = {
@@ -124,7 +124,7 @@ export const GenericFormDBService = () => {
   }
 
   const updateForm = async(formObject: GenericFormProps) =>{
-    // const timestamp = new Date();
+    const timestamp = new Date();
     try {
       const updateRef = await db
       .collection('genericforms')
@@ -132,7 +132,7 @@ export const GenericFormDBService = () => {
       
       updateRef.update({
         username: formObject.username,
-        dateModified: formObject.dateModified,
+        dateModified: timestamp,
         reportContent: formObject.reportContent,
         approvalStatus: formObject.approvalStatus,
       })

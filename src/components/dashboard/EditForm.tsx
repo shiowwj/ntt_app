@@ -15,7 +15,6 @@ const EditFormComponent: React.FC = () => {
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
   } = useForm<{ username: string; reportContent: string; dateOfReport: string; timeOfReport: string; }>();
 
   const getFormDetails = async (id: string) => {

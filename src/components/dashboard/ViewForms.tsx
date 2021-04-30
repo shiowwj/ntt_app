@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import { GenericFormProps } from '../../constants/genericFormProps';
 import { GenericFormDBService } from '../../utils/genericFormDBController';
@@ -15,7 +15,9 @@ const ViewFormsComponent: React.FC = () => {
   const [user, setUser] = useState<UserProps | null>(null);
   const history = useHistory();
 
-  const fetchFormsList = async () => {
+  
+  const fetchFormsList = useCallback( async () => {
+    console.log('hello')
     if (useCurrentSearchResultContext.currentUser !== null) {
       const userType = useCurrentSearchResultContext.currentUser.type;
       if (userType) {
@@ -27,21 +29,23 @@ const ViewFormsComponent: React.FC = () => {
         }
       }
     }
-  }
-
+  },[useCurrentSearchResultContext.currentUser])
+  
   useEffect(() => {
     setUser(useCurrentSearchResultContext.currentUser);
     // fetch forms 
     if (formsList == null) {
       fetchFormsList();
     }
-  }, [formsList, useCurrentSearchResultContext.currentUser, user])
+
+  }, [fetchFormsList, formsList, useCurrentSearchResultContext.currentUser, user])
 
   const handleApproveForm = async (formObject: GenericFormProps) => {
     const currentApprovalStatus = formObject.approvalStatus;
     if (!currentApprovalStatus) {
       formObject.approvalStatus = true;
       await GenericFormDBService().updateForm(formObject);
+      fetchFormsList();
     }
   }
   const handleEditForm = async (formObject: GenericFormProps) => {
