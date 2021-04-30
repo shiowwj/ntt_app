@@ -47,11 +47,11 @@ const ViewFormsComponent: React.FC = () => {
   const handleEditForm = async (formObject: GenericFormProps) => {
     const formId = formObject.id;
     // redirect to form edit page 
-    console.log('edit this form id', formId);
     history.push(`${path}/editform/${formId}`)
   }
   const handleDeleteForm = async (formObject: GenericFormProps) => {
     await GenericFormDBService().deleteForm(formObject);
+    fetchFormsList();
   }
 
   return (
@@ -60,7 +60,7 @@ const ViewFormsComponent: React.FC = () => {
         <div className="border-blue-600 bg-blue-300 rounded py-2 px-2 mt-3">
           <Link to={`${url}/createform`}>
             <span className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
-              Create Forms here
+              Create Forms
                 </span>
           </Link>
         </div>
@@ -73,25 +73,33 @@ const ViewFormsComponent: React.FC = () => {
           return (
             <div 
               // onClick={}
-              className="flex flex-row mt-4 mx-8 py-4 px-4 border-yellow-900 border-2 rounded-lg justify-between"
+              className="flex flex-col md:flex-row mt-4 mx-8 py-4 px-4 border-yellow-900 border-2 rounded-lg justify-between"
               key={index}>
-              <div className="flex flex-row">
-                <div>
-                  {index + 1}.
+
+              <div id="form-details" className="flex flex-col md:flex-row flex-grow justify-end">
+
+                <div className="flex flex-row my-3">
+                  <div>
+                    {index + 1}.
+                  </div>
+                  <div className="mx-4">
+                    {capitializeFirstWord(item.username)}
+                  </div>
                 </div>
-                <div className="mx-4">
-                  {capitializeFirstWord(item.username)}
+
+                <div className="flex flex-grow my-3">
+                  <div className="mx-4">
+                    {item.reportContent}
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-row">
-                <div className="mx-4">
-                  {item.reportContent}
-                </div>
-              </div>
-              <div className="flex flex-row">
-                <div className="mx-4">
+              
+                <div className="mx-4 my-3">
                   { item.dateModified ? dateFormatter(item.dateModified) : dateFormatter(item.dateCreated)}
                 </div>
+
+              </div>
+
+              <div id="action-buttons" className="flex flex-row my-3">
                 {item.approvalStatus ?
                   <div
                     className="mx-4 text-green-300">

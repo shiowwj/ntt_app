@@ -15,6 +15,7 @@ const EditFormComponent: React.FC = () => {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm<{ username: string; reportContent: string; dateOfReport: string; timeOfReport: string; }>();
 
   const getFormDetails = async (id: string) => {
@@ -39,7 +40,7 @@ const EditFormComponent: React.FC = () => {
   }, [formData, formId])
 
   const handleFormUpdateAction = handleSubmit(async (data) => {
-    console.log('update form date', data)
+    
     const timeStamp = new Date(data.dateOfReport + 'T' + data.timeOfReport)
     const formObject: GenericFormProps = {
       id: formId,
@@ -55,7 +56,7 @@ const EditFormComponent: React.FC = () => {
   return (
     <div className="min-h-screen flex justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <form className="mt-8 min-w-75vw">
-        <div className="flex mt-3 justify-between">
+        <div className="flex mt-3 justify-between flex-col md:flex-row">
 
           <div>
             <label htmlFor="username">
@@ -70,7 +71,6 @@ const EditFormComponent: React.FC = () => {
               {...register("username", {
                 required: true,
               })
-
               }
             />
             {errors?.username?.type === "required" && (
